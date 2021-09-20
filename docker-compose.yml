@@ -1,0 +1,19 @@
+version: '3.3'
+services:
+  linux-agent3:
+    image: azureagent.azurecr.io/azureagent:6
+    container_name: AzureAgent3
+    restart: always
+    networks:
+      - agentnet
+    environment:
+      - AZP_URL=https://dev.azure.com/nevincansel5517
+      - AZP_TOKEN
+      - AZP_AGENT_NAME=AzureAgent3
+      - AZP_POOL=AzureAgents
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /home/cansel/Azure-AgentPool/Agent-3/data:/azp/agent/
+networks:
+  agentnet:
+    driver: bridge
