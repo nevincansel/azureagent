@@ -1,0 +1,22 @@
+trigger:
+- master
+
+pool:
+  name: AzureAgents
+
+steps:
+
+  - task: Bash@3
+    displayName: Set Variables
+    inputs:
+      targetType: 'inline'
+      script: |
+        sed -i -r "s/AZP_TOKEN/AZP_TOKEN=$(AZP_TOKEN)/g" $(Build.SourcesDirectory)/docker-compose.yml
+
+  - task: DockerCompose@0
+    inputs:
+      containerregistrytype: 'Azure Container Registry'
+      azureContainerRegistry: '{"loginServer":"azureagent.azurecr.io", "id" : "/subscriptions/931de1bf-18c7-4cdc-a026-27c6f91aee5b/resourceGroups/Kubernetes/providers/Microsoft.ContainerRegistry/registries/azureagent"}'
+      dockerComposeFile: '**/docker-compose.yml'
+      action: 'Run a Docker Compose command'
+      dockerComposeCommand: 'up -d'
