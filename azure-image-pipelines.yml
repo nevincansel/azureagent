@@ -1,0 +1,13 @@
+trigger:
+- master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: Docker@2
+    inputs:
+      containerRegistry: 'AzureAgent'
+      repository: 'azureagent'
+      command: 'buildAndPush'
+      Dockerfile: '**/Dockerfile'
